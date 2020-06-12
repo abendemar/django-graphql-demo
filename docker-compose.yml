@@ -19,7 +19,7 @@ services:
         aliases:
           - postgres_backend_api
 
-  backend_api:
+  z1socialideas:
     tty: true
     build:
       context: .
