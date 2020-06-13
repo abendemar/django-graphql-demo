@@ -1,6 +1,8 @@
 import graphene
 import graphql_jwt
+import socialidea.schema
 import socialuser.schema
+import socialuserrelation.schema
 from graphql_auth import mutations
 from graphql_auth.schema import MeQuery, UserQuery
 
@@ -18,7 +20,14 @@ class AuthMutation(graphene.ObjectType):
     revoke_token = mutations.RevokeToken.Field()
 
 
-class Query(UserQuery, MeQuery, socialuser.schema.Query, graphene.ObjectType):
+class Query(
+    UserQuery,
+    MeQuery,
+    socialuser.schema.Query,
+    socialidea.schema.Query,
+    socialuserrelation.schema.Query,
+    graphene.ObjectType,
+):
     # This class will inherit from multiple Queries
     # as we begin to add more apps to our project
     pass

@@ -30,7 +30,7 @@ def get_env_variable(var_name: str) -> str:
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "b4n%c&#v+9x9m-6vtc@(!x+!nseym7p+0(jt09!sk_f3nyv(3c"
+SECRET_KEY = get_env_variable("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -51,8 +51,10 @@ INSTALLED_APPS = [
     "graphene_django",
     "graphql_auth",
     "graphql_jwt.refresh_token.apps.RefreshTokenConfig",
-    "socialuser",
     "channels",
+    "socialuser",
+    "socialidea",
+    "socialuserrelation",
 ]
 ASGI_APPLICATION = "z1socialideas.asgi.application"
 
@@ -173,9 +175,9 @@ CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
-EMAIL_HOST = "localhost"
-EMAIL_PORT = 1025
-EMAIL_HOST_USER = ""
-EMAIL_HOST_PASSWORD = ""
-EMAIL_USE_TLS = False
-DEFAULT_FROM_EMAIL = "test@fakemail.com"
+EMAIL_HOST = get_env_variable("EMAIL_HOST")
+EMAIL_PORT = int(get_env_variable("EMAIL_PORT"))
+EMAIL_HOST_USER = get_env_variable("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = get_env_variable("EMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = str(get_env_variable("EMAIL_USE_TLS")).lower() == "true"
+DEFAULT_FROM_EMAIL = get_env_variable("DEFAULT_FROM_EMAIL")
