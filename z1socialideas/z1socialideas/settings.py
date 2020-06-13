@@ -30,7 +30,8 @@ def get_env_variable(var_name: str) -> str:
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = get_env_variable("DJANGO_SECRET_KEY")
+# SECRET_KEY = get_env_variable("DJANGO_SECRET_KEY")
+SECRET_KEY = "b4n%c&#v+9x9m-6vtc@(!x+!nseym7p+0(jt09!sk_f3nyv(3c"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -94,8 +95,12 @@ WSGI_APPLICATION = "z1socialideas.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": "LocalDB",
+        "USER": "UserLocal",
+        "PASSWORD": "UserLocal",
+        "HOST": "localhost",
+        "PORT": "5432",
     }
 }
 

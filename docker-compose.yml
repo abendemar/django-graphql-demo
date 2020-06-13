@@ -19,43 +19,43 @@ services:
         aliases:
           - postgres_backend_api
 
-  z1socialideas:
-    tty: true
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - pipenv_dev=1
-    environment:
-      - PYTHONDONTWRITEBYTECODE=1
-      - PIPENV_DOTENV_LOCATION=/tmp/.env
-    working_dir: /code
-    volumes:
-      - ./Z1DjangoGraphql:/code
-      - ./.env:/tmp/.env
-    command: bash -c "
-      pipenv run python manage.py migrate &&
-      pipenv run python manage.py loaddata flags &&
-      pipenv run gunicorn --name app --workers 2 --log-level debug --error-logfile /tmp/gunicorn_err.log --reload --bind 0.0.0.0:8000 backend_api.wsgi:application
-      "
-    ports:
-      - 8000:8000
-    networks:
-      local:
-
-  worker:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    environment:
-      - PYTHONDONTWRITEBYTECODE=1
-      - PIPENV_DOTENV_LOCATION=/tmp/.env
-    working_dir: /code
-    volumes:
-      - ./Z1DjangoGraphql:/code:ro
-      - ./.env:/tmp/.env:ro
-    command: bash -c "
-      pipenv run celery -A Z1DjangoGraphql.settings worker -B -c 4 --loglevel=DEBUG
-     "
-    networks:
-      local:
+#  z1socialideas:
+#    tty: true
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#      args:
+#        - pipenv_dev=1
+#    environment:
+#      - PYTHONDONTWRITEBYTECODE=1
+#      - PIPENV_DOTENV_LOCATION=/tmp/.env
+#    working_dir: /code
+#    volumes:
+#      - ./Z1DjangoGraphql:/code
+#      - ./.env:/tmp/.env
+#    command: bash -c "
+#      pipenv run python manage.py migrate &&
+#      pipenv run python manage.py loaddata flags &&
+#      pipenv run gunicorn --name app --workers 2 --log-level debug --error-logfile /tmp/gunicorn_err.log --reload --bind 0.0.0.0:8000 backend_api.wsgi:application
+#      "
+#    ports:
+#      - 8000:8000
+#    networks:
+#      local:
+#
+#  worker:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    environment:
+#      - PYTHONDONTWRITEBYTECODE=1
+#      - PIPENV_DOTENV_LOCATION=/tmp/.env
+#    working_dir: /code
+#    volumes:
+#      - ./Z1DjangoGraphql:/code:ro
+#      - ./.env:/tmp/.env:ro
+#    command: bash -c "
+#      pipenv run celery -A Z1DjangoGraphql.settings worker -B -c 4 --loglevel=DEBUG
+#     "
+#    networks:
+#      local:
