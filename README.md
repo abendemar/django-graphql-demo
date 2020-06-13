@@ -48,3 +48,4 @@ python manage.py migrate
 python manage.py flush
 python manage.py createsuperuser
 meter datos
+python -m smtpd -n -c DebuggingServer localhost:1025
