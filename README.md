@@ -36,3 +36,15 @@ Listado de usuarios tienen que paginar-> Relay?
 Django Cache
 Test
 Posgre test
+
+
+django-admin startproject z1socialideas
+django-admin startapp smartnote
+django-admin startapp smartrelations
+django-admin startapp socialuser
+copiar las apps del setting
+python manage.py makemigrations
+python manage.py migrate
+python manage.py flush
+python manage.py createsuperuser
+meter datos

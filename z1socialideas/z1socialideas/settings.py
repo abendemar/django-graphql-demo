@@ -71,7 +71,7 @@ ROOT_URLCONF = "z1socialideas.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": ["templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -134,7 +134,7 @@ STATIC_URL = "/static/"
 
 
 GRAPHENE = {
-    "SCHEMA": "Z1DjangoGraphql.schema.schema",
+    "SCHEMA": "z1socialideas.schema.schema",
     "MIDDLEWARE": ["graphql_jwt.middleware.JSONWebTokenMiddleware",],
 }
 
