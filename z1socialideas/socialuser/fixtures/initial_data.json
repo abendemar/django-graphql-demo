@@ -1,0 +1,30 @@
+[
+  {
+    "fields": {
+      "date_joined": "2020-06-14T09:40:29.674Z",
+      "email": "bendemar81@gmail.com",
+      "first_name": "",
+      "groups": [],
+      "is_active": true,
+      "is_staff": true,
+      "is_superuser": true,
+      "last_login": null,
+      "last_name": "",
+      "password": "pbkdf2_sha256$180000$fzUAIRVXpGyc$gEv4Rdug38Wqrb4sGM/f3zBOc7YCCH6/njckhqPV9b4=",
+      "user_permissions": [],
+      "username": "bendemar"
+    },
+    "model": "socialuser.user",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "archived": false,
+      "secondary_email": null,
+      "user": 1,
+      "verified": false
+    },
+    "model": "graphql_auth.userstatus",
+    "pk": 1
+  }
+]

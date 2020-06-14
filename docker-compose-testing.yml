@@ -45,6 +45,9 @@ services:
     volumes:
       - ./z1socialideas:/code
       - ./.env:/tmp/.env
-    command: "tail -f /dev/null"
+    command: bash -c "
+      pipenv run python manage.py migrate &&
+      pipenv run python manage.py runserver 127.0.0.0:8000
+      "
     networks:
       local:

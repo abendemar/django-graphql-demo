@@ -48,7 +48,7 @@ services:
       - ./.env:/tmp/.env
     command: bash -c "
       pipenv run python manage.py migrate &&
-
+      pipenv run python manage.py loaddata socialuser/fixtures/initial_data.json &&
       pipenv run gunicorn --name app --workers 2 --log-level debug --error-logfile /tmp/gunicorn_err.log --reload --bind 0.0.0.0:8000 z1socialideas.wsgi:application
       "
     ports:
