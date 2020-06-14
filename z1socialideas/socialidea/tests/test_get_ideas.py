@@ -8,18 +8,21 @@ from socialuser.models import User
 
 from z1socialideas.schema import schema
 
-get_social_ideas_query = """
+GET_IDEAS_QUERY = """
     query
     {
-       getSocialIdeas {
+       getIdeas {
         content
-        privacy
+        privacity
         user {
           username
         }
       }
     }
 """
+
+FAKE_USERNAME = "fakeusername"
+FAKE_CONTENT = "fake content"
 
 
 @pytest.mark.django_db
@@ -28,17 +31,16 @@ class TestSocialIdeaSchema(TestCase):
         request_factory = RequestFactory()
 
         self.client = Client(schema)
-        self.user = mixer.blend(User, username="testname")
-        self.idea = mixer.blend(Idea, content="testcontent", user=self.user)
+        self.user = mixer.blend(User, username=FAKE_USERNAME)
+        self.idea = mixer.blend(Idea, user=self.user, content=FAKE_CONTENT)
 
         self.my_request = request_factory.get("/api/")
         self.my_request.user = self.user
 
-    def test_get_users_by_username_query(self):
-        response = self.client.execute(
-            get_social_ideas_query, context_value=self.my_request
-        )
-        response_users = response.get("data").get("getSocialIdeas")
+    def test_get_ideas(self):
+        response = self.client.execute(GET_IDEAS_QUERY, context_value=self.my_request)
 
-        assert response_users[0]["content"] == "testcontent"
-        assert response_users[0]["user"]["username"] == "testname"
+        response_users = response.get("data").get("getIdeas")
+
+        assert response_users[0]["content"] == FAKE_CONTENT
+        assert response_users[0]["user"]["username"] == FAKE_USERNAME

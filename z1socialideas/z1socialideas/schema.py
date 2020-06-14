@@ -3,6 +3,7 @@ import graphql_jwt
 import socialidea.schema
 import socialuser.schema
 import socialuserrelation.schema
+import socialuserrelationideas.schema
 from graphql_auth import mutations
 from graphql_auth.schema import MeQuery, UserQuery
 
@@ -26,6 +27,7 @@ class Query(
     socialuser.schema.Query,
     socialidea.schema.Query,
     socialuserrelation.schema.Query,
+    socialuserrelationideas.schema.Query,
     graphene.ObjectType,
 ):
     # This class will inherit from multiple Queries
@@ -33,7 +35,12 @@ class Query(
     pass
 
 
-class Mutation(AuthMutation, graphene.ObjectType):
+class Mutation(
+    AuthMutation,
+    socialidea.schema.Mutation,
+    socialuserrelation.schema.Mutation,
+    graphene.ObjectType,
+):
     token_auth = graphql_jwt.ObtainJSONWebToken.Field()
     verify_token = graphql_jwt.Verify.Field()
     refresh_token = graphql_jwt.Refresh.Field()
@@ -41,4 +48,8 @@ class Mutation(AuthMutation, graphene.ObjectType):
     resend_activation_email = mutations.ResendActivationEmail.Field()
 
 
-schema = graphene.Schema(query=Query, mutation=Mutation)
+class Subscription(socialuserrelationideas.schema.Subscription):
+    pass
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation, subscription=Subscription)
