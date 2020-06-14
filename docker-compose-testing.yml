@@ -27,7 +27,6 @@ services:
     networks:
       local:
     command: "python -m smtpd -n -c DebuggingServer localhost:1025"
-
   z1socialideas:
     tty: true
     build:
@@ -46,12 +45,6 @@ services:
     volumes:
       - ./z1socialideas:/code
       - ./.env:/tmp/.env
-    command: bash -c "
-      pipenv run python manage.py migrate &&
-
-      pipenv run gunicorn --name app --workers 2 --log-level debug --error-logfile /tmp/gunicorn_err.log --reload --bind 0.0.0.0:8000 z1socialideas.wsgi:application
-      "
-    ports:
-      - 8000:8000
+    command: "tail -f /dev/null"
     networks:
       local:
