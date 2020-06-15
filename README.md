@@ -1,51 +1,54 @@
-# Z1 api demo
-Example Project using Django and Graphql
+# Django GraphQL Api Demo
 
-## The Environment
+This is a demo proyect for Z1 Company using Django Postgres and Graphql
 
-We are going to use pipenv to manage environment.
+## Installation
 
-I like to use other tools to improve code quality and make easy to have clean projects
-- Precommit
+```bash
+mkdir demo-proyect
+cd demo-proyect
+git clone https://github.com/abendemar/django-graphql-demo.git .
+```
+
+This project use pre-commit tool to make easy have a clean and organize code. Installed with some hooks like:
+
 - isort
 - black
 - flake8
 
 
-###Preparing developing environment
-- Install pipenv with `pip install pipenv`
-- Create environment `pipenv install --dev`
-- Synchronize environment `pipenv lock & pipenv sync`
+## Environment
 
+This project use pipenv to manage environment
 
-manage.py dumpdata --exclude auth.permission --exclude contenttypes > db.json
-
-
-Launch Fake Mail server to log mails:
-```
-python -m smtpd -n -c DebuggingServer localhost:1025
+```bash
+pipenv install --dev
+pipenv shell
 ```
 
-End point de cambiar password -> manual
-Probar que se puede usar model user a pelo
-activar url en activar cuenta y activar password
-Quitar harcodeos y poner entornos en settings
-model exception en seguimiento al mismo usuario
-refactorizar change status de peticion
-Listado de usuarios tienen que paginar-> Relay?
-Django Cache
-Test
-Posgre test
+## Local Environment
+
+There are a docker-compose to run a local environment
+
+`docker-compose.yml`
+- Instance of Postgre Database
+- Instance of Python smtpd debugging server
+- Instance of Django Project
+
+.env file has environment variables to use with docker
 
 
-django-admin startproject z1socialideas
-django-admin startapp smartnote
-django-admin startapp smartrelations
-django-admin startapp socialuser
-copiar las apps del setting
-python manage.py makemigrations
-python manage.py migrate
-python manage.py flush
-python manage.py createsuperuser
-meter datos
-python -m smtpd -n -c DebuggingServer localhost:1025
+To execute test we have to type:
+```bash
+pipenv shell
+export $(grep -v '^#' .env_local | xargs -d '\n')
+cd z1socialideas
+pytest
+```
+.env_local file has environment variables to use in local
+
+#TODO
+- Refactors in some endpoints
+- Add Cache
+- Add more test
+- Deploy in production
