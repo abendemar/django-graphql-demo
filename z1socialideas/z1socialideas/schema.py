@@ -38,6 +38,7 @@ class Query(
 class Mutation(
     AuthMutation,
     socialidea.schema.Mutation,
+    socialuser.schema.Mutation,
     socialuserrelation.schema.Mutation,
     graphene.ObjectType,
 ):
