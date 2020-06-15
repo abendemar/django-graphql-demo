@@ -16,19 +16,18 @@ services:
     restart: unless-stopped
     networks:
       local:
-        aliases:
-          - postgres_backend_api
   fakemail:
     container_name: fakemail_container
     image: python:3.7-slim-buster
     ports:
-      - "1025:1025"
+      - 1025:1025
     restart: unless-stopped
     networks:
       local:
-    command: "python -m smtpd -n -c DebuggingServer localhost:1025"
+    command: "python -m smtpd -n -c DebuggingServer 0.0.0.0:1025"
 
   z1socialideas:
+    container_name: django_container
     tty: true
     build:
       context: .
@@ -41,18 +40,20 @@ services:
     working_dir: /code
     depends_on:
       - "postgres"
+      - "fakemail"
     links:
       - postgres:postgres_container
+      - fakemail:fakemail_container
     volumes:
       - ./z1socialideas:/code
       - ./.env:/tmp/.env
-    command: bash -c "
-      pipenv run python manage.py migrate &&
-      pipenv run python manage.py loaddata socialuser/fixtures/initial_data.json &&
-      pipenv run gunicorn --name app --workers 2 --log-level debug --error-logfile /tmp/gunicorn_err.log --reload --bind 0.0.0.0:8000 z1socialideas.wsgi:application &&
-      pipenv run daphne -b 0.0.0.0 -p 8000 z1socialideas.asgi:application
-      "
     ports:
       - 8000:8000
     networks:
       local:
+    command: bash -c "
+      dockerize -wait tcp://postgres_container:5432 -timeout 1m &&
+      pipenv run python manage.py migrate &&
+      pipenv run python manage.py loaddata socialuser/fixtures/initial_data.json &&
+      pipenv run python manage.py runserver 0.0.0.0:8000
+      "
