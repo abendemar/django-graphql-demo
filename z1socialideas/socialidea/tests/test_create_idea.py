@@ -16,7 +16,7 @@ FAKE_PRIVACITY_NOK = "ERROR PRIVACITY"
 CREATE_IDEA_QUERY = """
     mutation
     {
-      createIdea(idea:"Fake Content", privacity:"PUB")
+      createIdea(content:"Fake Content", privacity:"PUB")
       {
         idea {
           content,

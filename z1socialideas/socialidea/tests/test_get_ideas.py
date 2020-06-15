@@ -1,5 +1,4 @@
 import pytest
-from django.contrib.auth.models import AnonymousUser
 from django.test import RequestFactory, TestCase
 from graphene.test import Client
 from mixer.backend.django import mixer

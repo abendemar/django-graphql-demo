@@ -27,23 +27,23 @@ class Query(object):
 # Mutate Notes
 
 
-class CreateNote(graphene.Mutation):
+class CreateIdea(graphene.Mutation):
     idea = graphene.Field(IdeaType)
 
     class Arguments:
-        idea = graphene.String(required=True)
+        content = graphene.String(required=True)
         privacity = graphene.String(required=False)
 
     @login_required
-    def mutate(self, info, idea, **kwargs):
+    def mutate(self, info, content, **kwargs):
         privacity = kwargs.get("privacity", Idea.PUBLIC)
 
         if not check_valid_privacity(privacity):
             raise GraphQLError(f"Error. Wrong Privacy Value {privacity}")
 
-        idea = Idea(content=idea, privacity=privacity, user=info.context.user)
+        idea = Idea(content=content, privacity=privacity, user=info.context.user)
         idea.save()
-        return CreateNote(idea=idea)
+        return CreateIdea(idea=idea)
 
 
 class RemoveIdea(graphene.Mutation):
@@ -66,19 +66,14 @@ class RemoveIdea(graphene.Mutation):
         return RemoveIdea(idea_id=idea_id)
 
 
-class SetIdeaPrivacity(graphene.Mutation):
+class SetIdeaPublic(graphene.Mutation):
     idea = graphene.Field(IdeaType)
 
     class Arguments:
         idea_id = graphene.Int(required=True)
-        privacity = graphene.String(required=True)
 
     @login_required
-    def mutate(self, info, idea_id, privacity):
-
-        if not check_valid_privacity(privacity):
-            raise GraphQLError(f"Error. Wrong Privacy Value {privacity}")
-
+    def mutate(self, info, idea_id):
         try:
             idea = Idea.objects.get(pk=idea_id)
         except ObjectDoesNotExist:
@@ -86,13 +81,57 @@ class SetIdeaPrivacity(graphene.Mutation):
 
         if idea.user_id != info.context.user.id:
             raise GraphQLError("You are not the owner!")
-        idea.privacity = privacity
+        idea.privacity = Idea.PUBLIC
         idea.save()
 
-        return SetIdeaPrivacity(idea=idea)
+        return SetIdeaPublic(idea=idea)
+
+
+class SetIdeaPrivate(graphene.Mutation):
+    idea = graphene.Field(IdeaType)
+
+    class Arguments:
+        idea_id = graphene.Int(required=True)
+
+    @login_required
+    def mutate(self, info, idea_id):
+        try:
+            idea = Idea.objects.get(pk=idea_id)
+        except ObjectDoesNotExist:
+            raise GraphQLError("The idea not exists!")
+
+        if idea.user_id != info.context.user.id:
+            raise GraphQLError("You are not the owner!")
+        idea.privacity = Idea.PRIVATE
+        idea.save()
+
+        return SetIdeaPrivate(idea=idea)
+
+
+class SetIdeaProtected(graphene.Mutation):
+    idea = graphene.Field(IdeaType)
+
+    class Arguments:
+        idea_id = graphene.Int(required=True)
+
+    @login_required
+    def mutate(self, info, idea_id):
+        try:
+            idea = Idea.objects.get(pk=idea_id)
+        except ObjectDoesNotExist:
+            raise GraphQLError("The idea not exists!")
+
+        if idea.user_id != info.context.user.id:
+            raise GraphQLError("You are not the owner!")
+        idea.privacity = Idea.PROTECTED
+        idea.save()
+
+        return SetIdeaProtected(idea=idea)
 
 
 class Mutation(graphene.ObjectType):
-    create_idea = CreateNote.Field()
+    create_idea = CreateIdea.Field()
     remove_idea = RemoveIdea.Field()
-    set_idea_privacity = SetIdeaPrivacity.Field()
+    set_idea_public = SetIdeaPublic.Field()
+    set_idea_protected = SetIdeaProtected.Field()
+    set_idea_private = SetIdeaPrivate.Field()
