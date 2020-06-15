@@ -21,10 +21,6 @@ This project use pre-commit tool to make easy have a clean and organize code. In
 
 This project use pipenv to manage environment
 
-```bash
-pipenv install --dev
-pipenv shell
-```
 
 ## Local Environment
 
@@ -53,6 +49,7 @@ pass: Alonso13
 
 To execute test we have to:
 ```bash
+pipenv install --dev
 pipenv shell
 export $(grep -v '^#' .env_local | xargs -d '\n')
 cd z1socialideas
