@@ -28,17 +28,30 @@ pipenv shell
 
 ## Local Environment
 
-There are a docker-compose to run a local environment
+There are a docker-compose to run a local environment.
+
+.env file has environment variables to use with docker
 
 `docker-compose.yml`
 - Instance of Postgre Database
 - Instance of Python smtpd debugging server
 - Instance of Django Project
 
-.env file has environment variables to use with docker
+Execute this line to start proces
+```
+docker-compose up -d
+```
+Navigate to this urls to check server is running:
 
+`http://127.0.0.1:8000/admin/`
+```
+user:test@test.com
+pass: Alonso13
+```
 
-To execute test we have to type:
+`http://127.0.0.1:8000/graphql/`
+
+To execute test we have to:
 ```bash
 pipenv shell
 export $(grep -v '^#' .env_local | xargs -d '\n')
@@ -46,6 +59,7 @@ cd z1socialideas
 pytest
 ```
 .env_local file has environment variables to use in local
+
 
 #TODO
 - Refactors in some endpoints
