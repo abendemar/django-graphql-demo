@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     "socialuser",
     "socialidea",
     "socialuserrelation",
+    "socialuserrelationideas",
 ]
 ASGI_APPLICATION = "z1socialideas.asgi.application"
 
@@ -182,7 +183,7 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 EMAIL_HOST = get_env_variable("EMAIL_HOST")
 EMAIL_PORT = int(get_env_variable("EMAIL_PORT"))
-EMAIL_HOST_USER = get_env_variable("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = get_env_variable("EMAIL_HOST_PASSWORD")
+EMAIL_HOST_USER = get_env_variable("EMAIL_USER")
+EMAIL_HOST_PASSWORD = get_env_variable("EMAIL_PASSWORD")
 EMAIL_USE_TLS = str(get_env_variable("EMAIL_USE_TLS")).lower() == "true"
 DEFAULT_FROM_EMAIL = get_env_variable("DEFAULT_FROM_EMAIL")
