@@ -1,4 +1,5 @@
 import graphene
+from django.core.exceptions import ValidationError
 from graphene_django.types import DjangoObjectType
 from graphql import GraphQLError
 from graphql_jwt.decorators import login_required
@@ -36,3 +37,25 @@ class Query(object):
         if first:
             users_found = users_found[:first]
         return users_found
+
+
+class ChangePassword(graphene.Mutation):
+    user = graphene.Field(UserType)
+
+    class Arguments:
+        password = graphene.String(required=True)
+
+    @login_required
+    def mutate(self, info, password):
+        user = info.context.user
+        user.set_password(password)
+        try:
+            user.full_clean()
+            user.save()
+            return ChangePassword(user=user)
+        except ValidationError as e:
+            return ChangePassword(user=user, errors=e)
+
+
+class Mutation(graphene.ObjectType):
+    change_password = ChangePassword.Field()
