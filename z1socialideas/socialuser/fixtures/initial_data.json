@@ -2,7 +2,7 @@
   {
     "fields": {
       "date_joined": "2020-06-14T09:40:29.674Z",
-      "email": "bendemar81@gmail.com",
+      "email": "test@test.com",
       "first_name": "",
       "groups": [],
       "is_active": true,
@@ -12,7 +12,7 @@
       "last_name": "",
       "password": "pbkdf2_sha256$180000$fzUAIRVXpGyc$gEv4Rdug38Wqrb4sGM/f3zBOc7YCCH6/njckhqPV9b4=",
       "user_permissions": [],
-      "username": "bendemar"
+      "username": "test"
     },
     "model": "socialuser.user",
     "pk": 1
